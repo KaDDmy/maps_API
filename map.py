@@ -44,10 +44,10 @@ while running:
                 if zoom < max_zoom:
                     zoom += 1
                     map_file = load_map(zoom)
-                if event.key == pygame.K_PAGEUP:
-                    if zoom > min_zoom:
-                        zoom -= 1
-                        map_file = load_map(zoom)
+            if event.key == pygame.K_PAGEDOWN:
+                if zoom > min_zoom:
+                    zoom -= 1
+                    map_file = load_map(zoom)
             screen.blit(pygame.image.load(map_file), (0, 0))
             pygame.display.flip()
 
