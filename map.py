@@ -6,7 +6,7 @@ import requests
 
 server_address = 'https://static-maps.yandex.ru/v1?'
 api_key = 'f3a0fe3a-b07e-4840-a1da-06f18b2ddf13'
-ll = f'll=37.616627,55.760931'
+ll = f'37.616627,55.760931'
 size = '650,450'
 zoom = 10
 min_zoom = 2
