@@ -14,10 +14,15 @@ max_zoom = 20
 move_step = 0.1
 min_lat, max_lat = -85, 85
 min_lon, max_lon = -180, 180
+theme = "light"
+
+WIDTH, HEIGHT = 600, 450
+BUTTON_WIDTH, BUTTON_HEIGHT = 100, 40
+BUTTON_X, BUTTON_Y = WIDTH - BUTTON_WIDTH - 10, HEIGHT - BUTTON_HEIGHT - 10
 
 
 def load_map():
-    map_request = f"{server_address}ll={ll[0]},{ll[1]}&size={size}&z={zoom}&l=map&apikey={api_key}"
+    map_request = f"{server_address}ll={ll[0]},{ll[1]}&size={size}&z={zoom}&theme={theme}&apikey={api_key}"
     response = requests.get(map_request)
     if not response:
         print("Ошибка выполнения запроса:")
@@ -31,11 +36,21 @@ def load_map():
     return map_file
 
 
+def draw_theme_button():
+    """Рисует кнопку переключения темы."""
+    pygame.draw.rect(screen, (50, 50, 50), (BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT))
+    font = pygame.font.Font(None, 24)
+    text = font.render("Тема", True, (255, 255, 255))
+    text_rect = text.get_rect(center=(BUTTON_X + BUTTON_WIDTH // 2, BUTTON_Y + BUTTON_HEIGHT // 2))
+    screen.blit(text, text_rect)
+
+
 pygame.init()
-screen = pygame.display.set_mode((600, 450))
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("terrorblabe >> drow ranger")
 map_file = load_map()
 screen.blit(pygame.image.load(map_file), (0, 0))
+draw_theme_button()
 pygame.display.flip()
 
 running = True
@@ -66,8 +81,15 @@ while running:
                 ll[0] = max(ll[0] - move_step, min_lon)
                 map_file = load_map()
 
-            screen.blit(pygame.image.load(map_file), (0, 0))
-            pygame.display.flip()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            x, y = event.pos
+            if BUTTON_X <= x <= BUTTON_X + BUTTON_WIDTH and BUTTON_Y <= y <= BUTTON_Y + BUTTON_HEIGHT:
+                theme = "dark" if theme == "light" else "light"
+                map_file = load_map()
+
+        screen.blit(pygame.image.load(map_file), (0, 0))
+        draw_theme_button()
+        pygame.display.flip()
 
 pygame.quit()
 os.remove(map_file)
