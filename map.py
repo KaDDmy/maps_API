@@ -15,6 +15,7 @@ move_step = 0.1
 min_lat, max_lat = -85, 85
 min_lon, max_lon = -180, 180
 
+
 def load_map():
     map_request = f"{server_address}ll={ll[0]},{ll[1]}&size={size}&z={zoom}&l=map&apikey={api_key}"
     response = requests.get(map_request)
@@ -28,6 +29,7 @@ def load_map():
     with open(map_file, "wb") as file:
         file.write(response.content)
     return map_file
+
 
 pygame.init()
 screen = pygame.display.set_mode((600, 450))
